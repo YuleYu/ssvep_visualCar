@@ -22,14 +22,20 @@ namespace ssvep_visualCar
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const double FREQUENCY1 = 6;    // 控制键频率
-        private const double FREQUENCY2 = 7;    // 左伪键频率
-        private const double FREQUENCY3 = 8;    // 右伪键频率
+        private double FREQUENCY1 = 6;    // 控制键频率
+        private double FREQUENCY2 = 7;    // 左伪键频率
+        private double FREQUENCY3 = 8;    // 右伪键频率
 
-        private int switchCount = 0;    // 控制键闪烁计数
-        private int leftCount = 0;      // 左伪键闪烁计数
-        private int rightCount = 0;     // 右伪键闪烁计数
-        private bool cntnSgnl = true; // 停止符
+        private int switchCount = 0;        // 控制键闪烁计数
+        private int leftCount = 0;          // 左伪键闪烁计数
+        private int rightCount = 0;         // 右伪键闪烁计数
+        private bool cntnSgnl = false;       // 暂时停止符
+        private bool stopSgnl = true;       // 结束符
+        private bool switchEnableSgnl = true;   //
+        private bool leftEnableSgnl = true;     //
+        private bool rightEnableSgnl = true;    //
+
+        string startTime;
 
         // 由于需要控制闪烁频率，设置委托用于线程间通信。
         public delegate void flashHandle(Image image);
@@ -65,16 +71,7 @@ namespace ssvep_visualCar
             //sf.Filter = "time(*.txt)|*.txt";
             //sf.AddExtension = true;
             //sf.Title = "time";
-            //FileStream fs = new FileStream(sf.FileName, FileMode.Append);
-            string time = DateTime.Now.ToString();       // 获取当前时间
-            //byte[] data = new UTF8Encoding().GetBytes(time);
-            //fs.Write(data, 0, data.Length);
-            //fs.Flush();
-            //fs.Close();
-            File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "start:" + time + ' ');
-            this.Dispatcher.Invoke(new showStatusHandle(ShowStatus), time); // 显示时间信息
-            Thread.Sleep(3000);
-
+            //FileStream fs = new FileStream(sf.FileName, FileMode.Append); 
 
             Thread switchThread = new Thread(new ThreadStart(switchLoop));  // 控制键进程
             switchThread.SetApartmentState(ApartmentState.STA);
@@ -82,6 +79,8 @@ namespace ssvep_visualCar
             leftThread.SetApartmentState(ApartmentState.STA);
             Thread rightThread = new Thread(new ThreadStart(rightLoop));    // 右伪键进程
             rightThread.SetApartmentState(ApartmentState.STA);
+
+            startTime = DateTime.Now.ToString();       // 获取开始时间
 
             switchThread.Start();
             leftThread.Start(); 
@@ -95,28 +94,40 @@ namespace ssvep_visualCar
 
         private void switchLoop()   // 控制键循环
         {
-            while (cntnSgnl)
+            while (stopSgnl)
             {
-                flash(imageSwitch, FREQUENCY1);
-                switchCount++;
-            }
+                if (switchEnableSgnl)
+                    while (cntnSgnl)
+                    {
+                        flash(imageSwitch, FREQUENCY1);
+                        switchCount++;
+                    }
+            }  
         }
 
         private void leftLoop()     // 左伪键循环
         {
-            while (cntnSgnl)
+            while(stopSgnl)
             {
-                flash(imageLeft, FREQUENCY2);
-                leftCount++;
-            }
+                if (leftEnableSgnl)
+                    while (cntnSgnl)
+                    {
+                        flash(imageLeft, FREQUENCY2);
+                        leftCount++;
+                    }
+            } 
         }
 
         private void rightLoop()    // 右伪键循环
         {
-            while (cntnSgnl)
+            while (stopSgnl)
             {
-                flash(imageRight, FREQUENCY3);
-                rightCount++;
+                if (rightEnableSgnl)
+                    while (cntnSgnl)
+                    {
+                        flash(imageRight, FREQUENCY3);
+                        rightCount++;
+                    }
             }
         }
 
@@ -140,13 +151,28 @@ namespace ssvep_visualCar
         //辅助判断用，button 用于控制三个键的集体亮，并计数清零。
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            string time = DateTime.Now.ToString();       // 获取当前时间
-            File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "end:" + time + "\r\n");
-            flashOn(imageSwitch);
-            flashOn(imageLeft);
-            flashOn(imageRight);
-            time = DateTime.Now.ToString();       // 获取当前时间
-            File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "start:" + time + ' ');
+            //string time = DateTime.Now.ToString();       // 获取当前时间
+            //File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "end:" + time + "\r\n");
+            flashOff(imageSwitch);
+            flashOff(imageLeft);
+            flashOff(imageRight);
+
+            double.TryParse(switchFrqncyInput.GetLineText(0).ToString(), out FREQUENCY1);
+            double.TryParse(leftFrqncyInput.GetLineText(0).ToString(), out FREQUENCY2);
+            double.TryParse(rightFrqncyInput.GetLineText(0).ToString(), out FREQUENCY3);
+
+            /*
+            int countDown = 3;
+            for (int i=countDown; i>0; i--)
+            {
+                countdownBlock.Text = i.ToString();
+                Thread.Sleep(1000);
+            }
+            countdownBlock.Text = "";
+            */
+            cntnSgnl = true;
+
+            startTime = DateTime.Now.ToString();       // 获取开始时间
             switchCount = leftCount = rightCount = 0;
         }
 
@@ -175,15 +201,68 @@ namespace ssvep_visualCar
             ShowStatus("off");
         }
 
-        // stop 键，跳出闪烁循环
+        // stop 键，暂停闪烁，记录结果。
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            if (cntnSgnl)
-                cntnSgnl = false;
-            else
-                cntnSgnl = true;
+            cntnSgnl = false;
+
             string time = DateTime.Now.ToString();       // 获取当前时间
-            File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "end:" + time +"\r\n");
+            string msg = " ctrl:" + FREQUENCY1 + " left:" + FREQUENCY2 + " right:" + FREQUENCY3 + " ";
+            if (switchEnableSgnl) msg += "1"; else msg += "0";
+            if (leftEnableSgnl) msg += "1"; else msg += "0";
+            if (rightEnableSgnl) msg += "1"; else msg += "0";
+            File.AppendAllText(@"C:\Users\recom\Desktop\time.txt", "start:" + startTime + " end:" + time + msg + "\r\n");
+        }
+
+        // 设置控制键是否闪烁
+        private void buttonSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            if (switchEnableSgnl)
+            {
+                switchEnableSgnl = false;
+                switchEnableBlock.Text = "Unable";
+            }
+            else
+            {
+                switchEnableSgnl = true;
+                switchEnableBlock.Text = "Enable";
+            }
+        }
+
+        // 设置左伪键是否闪烁
+        private void leftEnable_Click(object sender, RoutedEventArgs e)
+        {
+            if (leftEnableSgnl)
+            {
+                leftEnableSgnl = false;
+                leftEnableBlock.Text = "Unable";
+            }
+            else
+            {
+                leftEnableSgnl = true;
+                leftEnableBlock.Text = "Enable";
+            }
+        }
+
+        // 设置右伪键是否闪烁
+        private void rightEnable_Click(object sender, RoutedEventArgs e)
+        {
+            if (rightEnableSgnl)
+            {
+                rightEnableSgnl = false;
+                rightEnableBlock.Text = "Unable";
+            }
+            else
+            {
+                rightEnableSgnl = true;
+                rightEnableBlock.Text = "Enable";
+            }
+        }
+
+        // 结束所有进程跳出循环，使前面的 start 和 stop 失效。
+        private void endBttn_Click(object sender, RoutedEventArgs e)
+        {
+            stopSgnl = false;
         }
     }
 }

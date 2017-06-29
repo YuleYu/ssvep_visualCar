@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ssvep_visualCar"
         mc:Ignorable="d"
        Title="MainWindow" Height="800" Width="1000">
-    <Grid>
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="59*"/>
             <RowDefinition Height="261*"/>
@@ -16,15 +16,25 @@
             <ColumnDefinition Width="358*"/>
             <ColumnDefinition Width="79*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imageSwitch" HorizontalAlignment="Center" Height="71" Margin="110,1,120,248.8" VerticalAlignment="Top" Width="128" Source="C:\Users\recom\Desktop\green.png" Grid.Column="1" RenderTransformOrigin="0.484,0.519" Grid.RowSpan="2"/>
-        <Image x:Name="imageLeft" HorizontalAlignment="Left" Height="60" Margin="0,0,0,0" VerticalAlignment="Center" Width="103" Source="C:\Users\recom\Desktop\black.png" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <Image x:Name="imageRight" HorizontalAlignment="Right" Height="60" Margin="0,0,0,0" VerticalAlignment="Center" Width="102" Source="C:\Users\recom\Desktop\black.png" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <TextBlock x:Name="statusStrip" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" RenderTransformOrigin="0.344,0.112"/>
-        <Button x:Name="button" Content="restart" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-        <TextBlock x:Name="switchblock" HorizontalAlignment="Left" Margin="10,40,0,0" TextWrapping="Wrap" Text="ctrl:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="leftblock" HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="left:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="rightblock" HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="rght:" VerticalAlignment="Top"/>
+        <Image x:Name="imageSwitch" HorizontalAlignment="Center" Height="164" Margin="213.8,24,175.6,0" VerticalAlignment="Top" Width="297" Source="C:\Users\recom\Desktop\green.png" Grid.Column="1" RenderTransformOrigin="0.484,0.519" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <Image x:Name="imageLeft" HorizontalAlignment="Left" Height="156" Margin="0,245.6,0,226.4" VerticalAlignment="Center" Width="267" Source="C:\Users\recom\Desktop\black.png" Grid.ColumnSpan="2" Grid.Row="1" Visibility="Collapsed"/>
+        <Image x:Name="imageRight" HorizontalAlignment="Right" Height="156" Margin="0,245.6,-0.4,226.4" VerticalAlignment="Center" Width="264" Source="C:\Users\recom\Desktop\black.png" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Visibility="Collapsed"/>
+        <TextBlock x:Name="statusStrip" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" RenderTransformOrigin="0.344,0.112" Foreground="#FF9A9595"/>
+        <Button x:Name="button" Content="start" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <TextBlock x:Name="switchblock" HorizontalAlignment="Left" Margin="10,40,0,0" TextWrapping="Wrap" Text="ctrl:" VerticalAlignment="Top" Foreground="#FFBFB7B7"/>
+        <TextBlock x:Name="leftblock" HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="left:" VerticalAlignment="Top" Foreground="#FFBFB7B7"/>
+        <TextBlock x:Name="rightblock" HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="rght:" VerticalAlignment="Top" Foreground="#FFBFB7B7"/>
         <Button x:Name="button1" Content="stop" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,41,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
+        <Button x:Name="leftEnable" Content="Left" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="46" Grid.RowSpan="2" Click="leftEnable_Click"/>
+        <Button x:Name="rightEnable" Content="Rght" HorizontalAlignment="Left" Margin="10,22.6,0,0" VerticalAlignment="Top" Width="46" Grid.Row="1" Click="rightEnable_Click"/>
+        <Button x:Name="switchEnable" Content="Ctrl" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Width="46" Click="buttonSwitch_Click"/>
+        <TextBlock x:Name="switchEnableBlock" HorizontalAlignment="Left" Height="17" Margin="69,94,0,0" TextWrapping="Wrap" Text="Enable" VerticalAlignment="Top" Width="42" Foreground="White"/>
+        <TextBlock x:Name="leftEnableBlock" HorizontalAlignment="Left" Height="17" Margin="69,129,0,0" TextWrapping="Wrap" Text="Enable" VerticalAlignment="Top" Width="42" Grid.RowSpan="2" Foreground="White"/>
+        <TextBlock x:Name="rightEnableBlock" Height="17" Margin="69,22.6,44.2,0" TextWrapping="Wrap" Text="Enable" VerticalAlignment="Top" Grid.Row="1" Foreground="White"/>
+        <TextBox x:Name="switchFrqncyInput" AcceptsReturn="true" HorizontalAlignment="Left" Height="23" Margin="137,94,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="28" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="leftFrqncyInput" AcceptsReturn="true" HorizontalAlignment="Left" Height="23" Margin="137,129,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="28" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <TextBox x:Name="rightFrqncyInput" AcceptsReturn="true" HorizontalAlignment="Left" Height="23" Margin="137,22.6,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="28" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Button x:Name="endBttn" Content="end" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,73,0,0" VerticalAlignment="Top" Width="75" Click="endBttn_Click"/>
     </Grid>
 </Window>
 
