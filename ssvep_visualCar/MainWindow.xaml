@@ -19,11 +19,12 @@
         <Image x:Name="imageSwitch" HorizontalAlignment="Center" Height="71" Margin="110,1,120,248.8" VerticalAlignment="Top" Width="128" Source="C:\Users\recom\Desktop\green.png" Grid.Column="1" RenderTransformOrigin="0.484,0.519" Grid.RowSpan="2"/>
         <Image x:Name="imageLeft" HorizontalAlignment="Left" Height="60" Margin="0,0,0,0" VerticalAlignment="Center" Width="103" Source="C:\Users\recom\Desktop\black.png" Grid.ColumnSpan="2" Grid.Row="1"/>
         <Image x:Name="imageRight" HorizontalAlignment="Right" Height="60" Margin="0,0,0,0" VerticalAlignment="Center" Width="102" Source="C:\Users\recom\Desktop\black.png" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <TextBlock x:Name="statusStrip" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="93" RenderTransformOrigin="0.344,0.112"/>
+        <TextBlock x:Name="statusStrip" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" RenderTransformOrigin="0.344,0.112"/>
         <Button x:Name="button" Content="restart" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
         <TextBlock x:Name="switchblock" HorizontalAlignment="Left" Margin="10,40,0,0" TextWrapping="Wrap" Text="ctrl:" VerticalAlignment="Top"/>
         <TextBlock x:Name="leftblock" HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="left:" VerticalAlignment="Top"/>
         <TextBlock x:Name="rightblock" HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="rght:" VerticalAlignment="Top"/>
+        <Button x:Name="button1" Content="stop" Grid.Column="2" HorizontalAlignment="Left" Margin="67.4,41,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
     </Grid>
 </Window>
 
